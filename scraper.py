@@ -40,13 +40,16 @@ def parse_page(content):
 
             # get link to product
             link = f"www.amazon.com{title.find('a').get('href')}"
+
+            # get image source
+            img = product.find('img').get('src')
         
         except AttributeError:
             print(f'Skipped {title.text} because not all attributes have been found.')
             skipped += 1
             continue    
 
-        items[title.text] = {'price' : price, 'ratings': ratings, 'product_link' : link}
+        items[title.text] = {'price' : price, 'ratings': ratings, 'product_link' : link, 'img_src' : img}
 
     print(f"success. {skipped} products have been skipped.")
     return items   
