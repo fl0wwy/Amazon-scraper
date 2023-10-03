@@ -84,8 +84,4 @@ if __name__ == "__main__":
         pages = 1    
     
     main(link, pages)
-
-
-
-
-       
+          
