@@ -2,23 +2,32 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 import json
+import webbrowser
+import http.server
+import socketserver
 
 def get_page_content(link, next_page=False):
-    driver = webdriver.Chrome()
-    driver.get(link)
+    try:
+        driver = webdriver.Chrome()
+        driver.get(link)
 
-    next_page_link = None
-    
-    content = driver.page_source
-    
-    # retrieves a link to the next page
-    if next_page == True:
-        next_btn = driver.find_element(By.CSS_SELECTOR, '.s-pagination-item.s-pagination-next.s-pagination-button.s-pagination-separator')
-        next_page_link = next_btn.get_attribute('href')
-    
-    driver.quit()
+        next_page_link = None
 
-    return content, next_page_link
+        content = driver.page_source
+        
+        # retrieves a link to the next page
+        if next_page == True:
+            next_btn = driver.find_element(By.CSS_SELECTOR, '.s-pagination-item.s-pagination-next.s-pagination-button.s-pagination-separator')
+            next_page_link = next_btn.get_attribute('href')
+
+        driver.quit()    
+    
+    except Exception:
+        print('Error scraping link!') 
+        exit(1) 
+
+    else:      
+        return content, next_page_link
 
 def parse_page(content):
     soup = BeautifulSoup(content, 'html.parser')
@@ -39,19 +48,19 @@ def parse_page(content):
             price = product.find('span', class_='a-offscreen').text
 
             # get link to product
-            link = f"www.amazon.com{title.find('a').get('href')}"
+            link = f"https://www.amazon.com{title.find('a').get('href')}"
 
             # get image source
             img = product.find('img').get('src')
         
         except AttributeError:
-            print(f'Skipped {title.text} because not all attributes have been found.')
+            print(f'\nSkipped {title.text} because not all attributes have been found.')
             skipped += 1
             continue    
 
         items[i] = {'title' : title.text, 'price' : price, 'ratings': ratings, 'product_link' : link, 'img_src' : img}
 
-    print(f"success. {skipped} products have been skipped.")
+    print(f"\nSuccess. {skipped} products have been skipped.")
     return items   
 
 def format_data(data):
@@ -73,7 +82,11 @@ def main(link, pages):
         link = next_page   
 
     format_data(items)
-    print('Scraped all pages')  
+    
+    print('\nScraped all pages. Opening server now...') 
+    with socketserver.TCPServer(("", 8000), http.server.SimpleHTTPRequestHandler) as httpd: 
+        webbrowser.open_new_tab('http://localhost:8000/index.html')
+        httpd.serve_forever()
 
 
 if __name__ == "__main__":
