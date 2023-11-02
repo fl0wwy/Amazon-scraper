@@ -1,0 +1,42 @@
+body{
+    background-color: #232526;
+    font-family: 'Karla', sans-serif;
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    color: azure;
+    letter-spacing: 0.2em;
+}
+
+header h1{
+    text-align: center;
+}
+
+.product{
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+    flex-wrap: wrap;
+    padding: 10px;
+    background-color: #18191a;
+    max-width: 100vw;
+    margin-bottom: 15px;
+}
+
+.content *{
+    max-width: 80vw;
+}
+
+img{
+    max-width: 20%;
+    height: auto;
+}
+
+.content a{
+    color: aqua;
+}
+
+@media screen and (max-width: 932px){
+    img{
+        max-width: 50%
+    }
+}

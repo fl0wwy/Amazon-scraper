@@ -22,11 +22,11 @@ def get_page_content(link, next_page=False):
 
 def parse_page(content):
     soup = BeautifulSoup(content, 'html.parser')
-    products = soup.find_all(class_="s-card-container s-overflow-hidden aok-relative puis-include-content-margin puis puis-v20azwp0smsgc01ytmkntf1rk7n s-latency-cf-section s-card-border")
+    products = soup.find_all(class_="puis-card-container s-card-container s-overflow-hidden aok-relative puis-include-content-margin puis puis-v29yj4s4ehtz85288pxsajyojq0 s-latency-cf-section puis-card-border")
 
     items = {}
     skipped = 0
-    for product in products:
+    for i, product in enumerate(products, start=1):
         # product title
         title = product.find('h2')
         
@@ -49,17 +49,19 @@ def parse_page(content):
             skipped += 1
             continue    
 
-        items[title.text] = {'price' : price, 'ratings': ratings, 'product_link' : link, 'img_src' : img}
+        items[i] = {'title' : title.text, 'price' : price, 'ratings': ratings, 'product_link' : link, 'img_src' : img}
 
     print(f"success. {skipped} products have been skipped.")
     return items   
 
-def format_data(data, page):
-    with open(f'page_{page}.json', 'w') as json_file:
+def format_data(data):
+    with open(f'data.json', 'w') as json_file:
         json.dump(data, json_file, indent=4)     
+        json_file.flush()
 
 
 def main(link, pages):
+    items = {}
     for i in range(pages):
         print(f" Now at page {i+1}")
         if i != pages -1:
@@ -67,9 +69,10 @@ def main(link, pages):
         else:
            content, next_page = get_page_content(link)   
 
-        format_data(parse_page(content), i+1)
+        items.update(parse_page(content))
         link = next_page   
 
+    format_data(items)
     print('Scraped all pages')  
 
 
