@@ -1,12 +1,10 @@
-# Amazon Scraper
+# Amazon Product Data Scraper
 
-## Using Python and React
+Amazon product data scraper using the Selenium library in order to dodge bot detection systems.
 
-I'm scraping the data from Amazon using the Selenium library to dodge the bot detection Amazon implements
-which slows down the process a bit but works well regardless.
+The content is then dumped into a .json file format and dynamically loaded onto an HTML page using JavaScript and then
+the content is displayed on the default web browser by serving the HTML file through a local web server on port 8000.
 
 ## To do
 
-Implement a react website that displays all the scraped data
-
-Plot the changes in product data with each day a certain page is scraped
+Compare price jumps over each period a certain page is scraped.

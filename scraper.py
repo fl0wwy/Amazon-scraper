@@ -99,5 +99,4 @@ if __name__ == "__main__":
     except Exception:
         pages = 1    
     
-    main(link, pages)
-          
+    main(link, pages)       
