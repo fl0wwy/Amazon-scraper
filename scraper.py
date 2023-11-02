@@ -32,6 +32,8 @@ def get_page_content(link, next_page=False):
 def parse_page(content):
     soup = BeautifulSoup(content, 'html.parser')
     products = soup.find_all(class_="puis-card-container s-card-container s-overflow-hidden aok-relative puis-include-content-margin puis puis-v29yj4s4ehtz85288pxsajyojq0 s-latency-cf-section puis-card-border")
+    if len(products) == 0:
+        products = soup.find_all(class_="puis-card-container s-card-container s-overflow-hidden aok-relative puis-expand-height puis-include-content-margin puis puis-v29yj4s4ehtz85288pxsajyojq0 s-latency-cf-section puis-card-border")
 
     items = {}
     skipped = 0

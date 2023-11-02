@@ -1,7 +1,8 @@
 const jsonContainer = document.getElementById('json_container')
 const request = new Request('data.json')
 
-fetch(request)
+document.addEventListener("DOMContentLoaded", function() {
+    fetch(request)
     .then((Response) => Response.json())
     .then((data) => {
         console.log(data);
@@ -45,6 +46,7 @@ fetch(request)
             jsonContainer.appendChild(productDiv)    
         }
     })
+});
 
 
 
